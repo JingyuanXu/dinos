@@ -26,6 +26,34 @@ function DinoConstructor(
  function dinoObj(dinosJson) {
   let newDinoArray = [];
   dinosJson.forEach((x) => {
+    switch (x.species) {
+      case "Triceratops":
+      x.imagePath = `triceratops.png`;
+      break;
+      case "Tyrannosaurus Rex":
+      x.imagePath = `tyrannosaurus rex.png`;
+      break;
+      case "Anklyosaurus":
+      x.imagePath = `anklyosaurus.png`;
+      break;
+      case "Brachiosaurus":
+      x.imagePath = `brachiosaurus.png`;
+      break;
+      case "Stegosaurus":
+      x.imagePath = `stegosaurus.png`;
+      break;
+      case "Elasmosaurus":
+      x.imagePath = `elasmosaurus.png`;
+      break;
+      case "Pteranodon":
+      x.imagePath = `pteranodon.png`;
+      break;
+      case "Pigeon":
+        x.imagePath = `pigeon.png`;
+        break;
+      default:
+        x.imagePath = ``;
+  }
       newDino = new DinoConstructor(
           x.species,
           x.weight,
@@ -36,6 +64,7 @@ function DinoConstructor(
           x.fact,
           x.imagePath
       )
+      console.log(newDino)
       newDinoArray.push(newDino);
   });
   return newDinoArray;
@@ -49,7 +78,7 @@ function humanObj() {
     weight: document.getElementById("weight").value,
     diet: document.getElementById("diet").value,
     height: parseInt(document.getElementById("feet").value) * 12 + parseInt(document.getElementById("inches").value),
-    imagePath: `./images/human.png`
+    imagePath: `human.png`
   }
   return human;
 }
@@ -95,11 +124,11 @@ function addDinoTile(dino) {
   <img src="images/${dino.imagePath}">
   `;
   if (dino.species !== "Pigeon") {
-      tile.innerHTML += `<p>${dino.fact} in ${dino.where} at ${dino.when}</p>`;
+      tile.innerHTML += `<p>${dino.when}, in ${dino.where}, ${dino.fact} Compare with you: ${compareDiet(dino)}, ${compareHeight(dino)},${compareWeight(dino)}</p>`;
   } else if (dino.species === "Pigeon") {
       tile.innerHTML += `<p>${dino.fact}</p>`;
   }
-  return this.innerHTML;
+  return tile;
 }
 
 function addHumanTile(humanData) {
@@ -109,18 +138,20 @@ function addHumanTile(humanData) {
   <h3>${humanData.name}</h3>
   <img src="images/${humanData.imagePath}">
   `;
-  return this.innerHTML;
+  return tile;
 }
 
 function addUI(){
   document.querySelector('form').style.display = 'none';
-  let fragment;
+  let fragment = document.createDocumentFragment();
   for (let i = 0; i < 9; i++) {
-    if (i !=4) {
-      fragment = document.createDocumentFragment().appendChild(addDinoTile(dinoArray[i]));
-    } else {
-      fragment = document.createDocumentFragment().appendChild(addHumanTile(humanData));
-    }
+    if (i < 4) {
+      fragment.appendChild(addDinoTile(dinoArray[i]));
+    } else if (i == 4){
+      fragment.appendChild(addHumanTile(humanData));
+    }  else if (i > 4) {
+      fragment.appendChild(addDinoTile(dinoArray[i-1]));
+    } 
     document.getElementById('grid').appendChild(fragment);
   }
 }
