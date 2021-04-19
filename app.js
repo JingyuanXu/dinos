@@ -64,7 +64,6 @@ function DinoConstructor(
           x.fact,
           x.imagePath
       )
-      console.log(newDino)
       newDinoArray.push(newDino);
   });
   return newDinoArray;
@@ -76,16 +75,18 @@ function humanObj() {
   let human = {
     name:document.getElementById("name").value,
     weight: document.getElementById("weight").value,
-    diet: document.getElementById("diet").value,
+    diet: document.getElementById("diet").value.toLowerCase(),
     height: parseInt(document.getElementById("feet").value) * 12 + parseInt(document.getElementById("inches").value),
     imagePath: `human.png`
   }
   return human;
 }
-const humanData = humanObj();
+let humanData = humanObj();
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches.
 function compareWeight(dinos) {
+  humanData = humanObj();
+
   if (parseInt(dinos.weight) > parseInt(humanData.weight)) {
       return `${dinos.species} is heavier than you`;
   } else {
@@ -96,6 +97,7 @@ function compareWeight(dinos) {
 // Create Dino Compare Method 2
 // NOTE: Weight in JSON file is in lbs, height in inches.
 function compareHeight(dinos) {
+  humanData = humanObj();
   if (parseInt(dinos.height) > parseInt(humanData.height)) {
     return `${dinos.species} is higher than you`;
     } else {
@@ -106,6 +108,7 @@ function compareHeight(dinos) {
 // NOTE: Weight in JSON file is in lbs, height in inches.
 
 function compareDiet(dinos) {
+  humanData = humanObj();
   if (dinos.diet == humanData.diet) {
     return `You and ${dinos.species} has same diet`;
     } else {
@@ -142,7 +145,9 @@ function addHumanTile(humanData) {
 }
 
 function addUI(){
-  document.querySelector('form').style.display = 'none';
+  // Remove form from screen
+  humanData = humanObj();
+
   let fragment = document.createDocumentFragment();
   for (let i = 0; i < 9; i++) {
     if (i < 4) {
@@ -157,15 +162,10 @@ function addUI(){
 }
 
 
-// Remove form from screen
+
 
 // On button click, prepare and display infographic
 function submit() {
-
-  // const errorMessage = document.getElementById('error');
-  // if (humanData.name === "" || humanData.height <= 0 || humanData.weight <= 0 ) {
-  //     errorMessage.innerHTML = '<p>Your input is invaild</p>';
-  //     return;
-  // } 
+  document.querySelector('form').style.display = 'none';
   addUI();
 }
